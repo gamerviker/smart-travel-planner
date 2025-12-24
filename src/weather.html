@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="output.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+          <div class="text-xl font-bold text-blue-600">SmartTravel</div>
+          <div class="hidden md:flex space-x-6">
+            <a href="home.html" class="text-gray-700 hover:text-blue-600"
+              >Home</a
+            >
+            <a href="destination.html" class="text-gray-700 hover:text-blue-600"
+              >Destination</a
+            >
+            <a href="weather.html" class="text-gray-700 hover:text-blue-600"
+              >Weather</a
+            >
+            <a href="places.html" class="text-gray-700 hover:text-blue-600"
+              >Places</a
+            >
+            <a href="budget.html" class="text-gray-700 hover:text-blue-600"
+              >Budget</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- weather -->
+
+    <div class="flex justify-center mt-20 px-4">
+      <div
+        class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md text-center"
+      >
+        <h1 class="text-2xl font-bold text-sky-600 mb-1">Weather Report</h1>
+        <h2 id="cityName" class="text-1xl font-bold text-sky-600 mb-1"></h2>
+
+
+        <!-- loading -->
+         <div id="loading" class="text-gray-500 animate-pulse">Fetching weather data...</div>
+
+         <!-- weather data -->
+          <div></div>
+
+
+          <!-- Error -->
+           <p  id="error" class="hidden text-red-600 mt-4 font-semibold">❌ Weather Data Not Found</p>
+
+
+      </div>
+    </div>
+
+    <script src="./js/weather.js"></script>
+  </body>
+</html>

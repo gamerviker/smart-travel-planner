@@ -1,51 +1,79 @@
+// Read city from URL
 const params = new URLSearchParams(window.location.search);
-
 const city = params.get("city");
 
+// DOM elements
 const cityName = document.getElementById("cityName");
+const loading = document.querySelector("#loading");
+const cityInfo = document.querySelector("#cityInfo");
+const errorBox = document.querySelector("#error");
 
-let GEODB_API_KEY = "729cfb446amsh7c28abd4fb84ddfp1b52f3jsnde05037bfc40";
-let GEODB_HOST = "wft-geo-db.p.rapidapi.com";
+// console.log(loading);
 
+
+const lat = document.querySelector("#lat");
+const lon = document.querySelector("#lon");
+const country = document.querySelector("#country");
+const population = document.querySelector("#population");
+const state = document.querySelector("#state");
+
+// API details
+const GEODB_API_KEY = "729cfb446amsh7c28abd4fb84ddfp1b52f3jsnde05037bfc40";
+const GEODB_HOST = "wft-geo-db.p.rapidapi.com";
+
+// Check if city exists in URL
 if (city) {
   cityName.textContent = city;
-  async function fetchCityDetails(cityName) {
+  loading.classList.add("hidden");
+
+  async function fetchCityDetails(cityNameValue) {
     try {
-      let response = await fetch(
-        `https://${GEODB_HOST}/v1/geo/cities?namePrefix=${cityName}&limit=1`,
+      const response = await fetch(
+        `https://${GEODB_HOST}/v1/geo/cities?namePrefix=${cityNameValue}&limit=1`,
         {
           method: "GET",
           headers: {
-            "X-Rapidapi-Key": GEODB_API_KEY,
-            "X-Rapidapi-Host": GEODB_HOST,
+            "X-RapidAPI-Key": GEODB_API_KEY,
+            "X-RapidAPI-Host": GEODB_HOST,
           },
         }
       );
 
-    //   console.log(response);
+      if (!response.ok) {
+        throw new Error("API request failed");
+      }
 
-        if (!response.ok) {
-            console.log("API not fetched....");
-        }
+      const data = await response.json();
 
-        let data = await response.json();
-        console.log(data);
-        if(!data.data || data.data.length === 0) {
-            console.log("City not found");
-        }
-        let cityData = data.data[0];
-        console.log(cityData);
-        
-            
-            
+      if (!data.data || data.data.length === 0) {
+        throw new Error("City not found");
+      }
 
+      const cityData = data.data[0];
 
+      // Populate UI
+      lat.textContent = cityData.latitude;
+      lon.textContent = cityData.longitude;
+      country.textContent = cityData.country;
+      state.textContent = cityData.region || "N/A";
+      population.textContent = cityData.population
+        ? cityData.population.toLocaleString()
+        : "N/A";
+
+      loading.classList.add("hidden");
+      cityInfo.classList.remove("hidden");
     } catch (error) {
       console.error(error);
+      loading.classList.add("hidden");
+      errorBox.classList.remove("hidden");
     }
   }
 
   fetchCityDetails(city);
 } else {
   cityName.textContent = "Unknown City";
+  loading.classList.add("hidden");
+  errorBox.classList.remove("hidden");
 }
+
+document.querySelector("#weatherBtn").href = `weather.html?city=${city}`;
